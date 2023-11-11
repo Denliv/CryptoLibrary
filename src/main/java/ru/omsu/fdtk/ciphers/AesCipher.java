@@ -8,8 +8,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +19,7 @@ public class AesCipher  implements ICipher
     private Key key;
     private java.security.Key aesKey;
     private IvParameterSpec ivParameterSpec;
-    private Cipher aesCipher;
+    private final Cipher aesCipher;
     private boolean encryptMode;
 
     public AesCipher(Key key)
@@ -45,17 +44,7 @@ public class AesCipher  implements ICipher
             throw new IllegalArgumentException("incorrect key format for aes cipher");
         }
     }
-
-    public void encrypt(InputStream inputStream, OutputStream outputStream)
-    {
-
-    }
-
-    public void decrypt(InputStream inputStream, OutputStream outputStream)
-    {
-
-    }
-
+    
     public byte[] encrypt(byte[] openText)
     {
         if (!encryptMode)
