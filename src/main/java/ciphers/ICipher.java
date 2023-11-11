@@ -1,4 +1,4 @@
-package ru.omsu.fdtk.ciphers;
+package ciphers;
 
 public interface ICipher
 {

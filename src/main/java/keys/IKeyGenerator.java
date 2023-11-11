@@ -1,4 +1,4 @@
-package ru.omsu.fdtk.keys;
+package keys;
 
 public interface IKeyGenerator
 {
