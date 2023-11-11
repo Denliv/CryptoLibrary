@@ -1,14 +1,11 @@
 package ru.omsu.fdtk.ciphers;
 
-import ru.omsu.fdtk.keys.Key;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -16,17 +13,17 @@ import java.util.Arrays;
 
 public class AesCipher  implements ICipher
 {
-    private Key key;
+    private byte[] key;
     private java.security.Key aesKey;
     private IvParameterSpec ivParameterSpec;
     private final Cipher aesCipher;
     private boolean encryptMode;
 
-    public AesCipher(Key key)
+    public AesCipher(byte[] key)
     {
         this.key = key;
-        aesKey = new SecretKeySpec(Arrays.copyOfRange(key.getByteArr(), 0, 16), "AES");
-        ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key.getByteArr(), 16, 32));
+        aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
+        ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
         try
         {
             aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -44,7 +41,7 @@ public class AesCipher  implements ICipher
             throw new IllegalArgumentException("incorrect key format for aes cipher");
         }
     }
-    
+
     public byte[] encrypt(byte[] openText)
     {
         if (!encryptMode)
@@ -97,11 +94,11 @@ public class AesCipher  implements ICipher
         }
         return res;
     }
-    public void setKey(Key key)
+    public void setKey(byte[] key)
     {
         this.key = key;
-        aesKey = new SecretKeySpec(Arrays.copyOfRange(key.getByteArr(), 0, 16), "AES");
-        ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key.getByteArr(), 16, 32));
+        aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
+        ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
         try
         {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
@@ -115,6 +112,6 @@ public class AesCipher  implements ICipher
 
     public long getBlockSize()
     {
-        return 128;
+        return 16;
     }
 }

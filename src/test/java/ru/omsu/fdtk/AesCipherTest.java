@@ -3,10 +3,9 @@ package ru.omsu.fdtk;
 import org.junit.Assert;
 import org.junit.Test;
 import ru.omsu.fdtk.ciphers.AesCipher;
-import ru.omsu.fdtk.keys.IKeyFactory;
+import ru.omsu.fdtk.keys.IKeyGenerator;
 
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
 import java.util.Arrays;
 
 public class AesCipherTest
@@ -20,7 +19,7 @@ public class AesCipherTest
         {
             byteArr[i] = (byte) i;
         }
-        AesCipher cipher = new AesCipher(IKeyFactory.create(byteArr));
+        AesCipher cipher = new AesCipher(byteArr);
         byte[] openText = "argadhwtuwrtusrjj".getBytes(StandardCharsets.UTF_8);
         //Act
         byte[] cipherText = cipher.encrypt(openText);
@@ -42,7 +41,7 @@ public class AesCipherTest
         {
             byteArr[i] = (byte) i;
         }
-        AesCipher cipher = new AesCipher(IKeyFactory.create(byteArr));
+        AesCipher cipher = new AesCipher(byteArr);
         byte[] openText = "argadhwtuwrtusrj".getBytes(StandardCharsets.UTF_8);
         //Act
         byte[] cipherText1 = cipher.encrypt(openText);
