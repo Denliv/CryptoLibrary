@@ -1,9 +1,7 @@
-package ru.omsu.fdtk;
+package ciphers;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.omsu.fdtk.ciphers.AesCipher;
-import ru.omsu.fdtk.keys.IKeyGenerator;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package ru.omsu.fdtk.ciphers;
+package ciphers;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
