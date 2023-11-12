@@ -25,28 +25,44 @@ public class Cryptographer {
     }
 
     public void terminalEncrypt() {
-        for (var cipher : cipherList) {
+        for (var cipher : cipherList)
+        {
+            byte[] cipherText;
             this.dataDealer.toFirst();
             this.dataDealer.setBlockSize(cipher.getBlockSize());
             while (dataDealer.hasNext()) {
                 var plainText = this.dataDealer.readBlock();
-                var cipherText = cipher.encrypt(plainText);
-                if (cipherText.length != 0) this.dataDealer.writeBlock(cipherText);
+                cipherText = cipher.encrypt(plainText);
+                if (cipherText.length > cipher.getBlockSize())
+                    throw new IllegalStateException("time to fix cipher)))");
+                this.dataDealer.writeBlock(cipherText);
             }
-            while(!Arrays.equals(cipher.encrypt(new byte[]{}), new byte[]{})) {}
+            do {
+                cipherText  = cipher.encrypt(new byte[0]);
+                this.dataDealer.writeBlock(cipherText);
+            }
+            while(cipherText.length != 0);
         }
     }
 
     public void terminalDecrypt(List<ICipher> cipherList, IDataDealer dataDealer) {
         for (int i = cipherList.size() - 1; i >= 0; --i) {
             var cipher = cipherList.get(i);
+            byte[] plainText;
             dataDealer.toFirst();
             dataDealer.setBlockSize(cipher.getBlockSize());
             while (dataDealer.hasNext()) {
                 var cipherText = dataDealer.readBlock();
-                var plainText = cipher.decrypt(cipherText);
-                if (plainText.length != 0) dataDealer.writeBlock(cipherText);
+                plainText = cipher.decrypt(cipherText);
+                if (plainText.length > cipher.getBlockSize())
+                    throw new IllegalStateException("time to fix cipher)))");
+                dataDealer.writeBlock(plainText);
             }
+            do {
+                plainText  = cipher.decrypt(new byte[0]);
+                this.dataDealer.writeBlock(plainText);
+            }
+            while(plainText.length != 0);
         }
     }
 }
