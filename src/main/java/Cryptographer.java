@@ -1,8 +1,8 @@
 import ciphers.ICipher;
 import data_dealer.IDataDealer;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Cryptographer {
@@ -24,9 +24,8 @@ public class Cryptographer {
         return this;
     }
 
-    public void terminalEncrypt() {
-        for (var cipher : cipherList)
-        {
+    public void terminalEncrypt() throws IOException {
+        for (var cipher : cipherList) {
             byte[] cipherText;
             this.dataDealer.toFirst();
             this.dataDealer.setBlockSize(cipher.getBlockSize());
@@ -38,14 +37,14 @@ public class Cryptographer {
                 this.dataDealer.writeBlock(cipherText);
             }
             do {
-                cipherText  = cipher.encrypt(new byte[0]);
+                cipherText = cipher.encrypt(new byte[0]);
                 this.dataDealer.writeBlock(cipherText);
             }
-            while(cipherText.length != 0);
+            while (cipherText.length != 0);
         }
     }
 
-    public void terminalDecrypt(List<ICipher> cipherList, IDataDealer dataDealer) {
+    public void terminalDecrypt(List<ICipher> cipherList, IDataDealer dataDealer) throws IOException {
         for (int i = cipherList.size() - 1; i >= 0; --i) {
             var cipher = cipherList.get(i);
             byte[] plainText;
@@ -59,10 +58,10 @@ public class Cryptographer {
                 dataDealer.writeBlock(plainText);
             }
             do {
-                plainText  = cipher.decrypt(new byte[0]);
+                plainText = cipher.decrypt(new byte[0]);
                 this.dataDealer.writeBlock(plainText);
             }
-            while(plainText.length != 0);
+            while (plainText.length != 0);
         }
     }
 }
