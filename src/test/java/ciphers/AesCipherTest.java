@@ -2,6 +2,7 @@ package ciphers;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ciphers.AesCipher;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
