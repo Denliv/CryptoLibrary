@@ -6,8 +6,8 @@ import java.util.Random;
 
 public class AthenianKeyGenerator implements IKeyGenerator
 {
-    private static Map<Integer, Integer> nonZeroDivisors;
-    private static Random random;
+    private final Map<Integer, Integer> nonZeroDivisors;
+    private final Random random;
 
     public AthenianKeyGenerator()
     {
