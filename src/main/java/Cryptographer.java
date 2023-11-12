@@ -2,6 +2,7 @@ import ciphers.ICipher;
 import data_dealer.IDataDealer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Cryptographer {
@@ -32,7 +33,7 @@ public class Cryptographer {
                 var cipherText = cipher.encrypt(plainText);
                 if (cipherText.length != 0) this.dataDealer.writeBlock(cipherText);
             }
-            cipher.encrypt(new byte[]{});
+            while(!Arrays.equals(cipher.encrypt(new byte[]{}), new byte[]{})) {}
             this.dataDealer.cleanRest();
         }
     }
