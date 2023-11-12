@@ -34,7 +34,6 @@ public class Cryptographer {
                 if (cipherText.length != 0) this.dataDealer.writeBlock(cipherText);
             }
             while(!Arrays.equals(cipher.encrypt(new byte[]{}), new byte[]{})) {}
-            this.dataDealer.cleanRest();
         }
     }
 

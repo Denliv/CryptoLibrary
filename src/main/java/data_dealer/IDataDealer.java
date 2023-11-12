@@ -10,8 +10,4 @@ public interface IDataDealer {
     void writeBlock(byte[] in);
 
     boolean hasNext();
-
-    void clean();
-
-    void cleanRest();
 }
