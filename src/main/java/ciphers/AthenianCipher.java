@@ -6,9 +6,11 @@ public class AthenianCipher implements ICipher
 
     public AthenianCipher(byte[] key)
     {
-        if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26) throw new IllegalArgumentException("not correct key");
+        if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
+            throw new IllegalArgumentException("not correct key");
         byte[] NODE = getBezuCoefficients(key[0], (byte) 26);
-        if ((key[0] * NODE[0] + 26 * NODE[1]) != 1)  throw new IllegalArgumentException("not correct key");
+        if ((key[0] * NODE[0] + 26 * NODE[1]) != 1)
+            throw new IllegalArgumentException("not correct key");
         this.key = key;
     }
 
@@ -54,7 +56,6 @@ public class AthenianCipher implements ICipher
     {
         byte[] NODE = getBezuCoefficients(key[0], (byte) 26);
         byte firstChar;
-        byte secondChar;
         if (plainText <= 'z' && plainText >= 'a')
         {
             firstChar = 'a';
