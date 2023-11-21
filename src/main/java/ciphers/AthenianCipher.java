@@ -49,7 +49,7 @@ public class AthenianCipher implements ICipher
     }
 
     @Override
-    public long getBlockSize() {
+    public int getBlockSize() {
         return 32;
     }
     private byte encryptOrDecryptInAthenianCipher(boolean flagOfEncrypt, byte plainText)

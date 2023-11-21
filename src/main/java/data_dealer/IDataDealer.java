@@ -4,15 +4,15 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public interface IDataDealer extends AutoCloseable, Closeable {
-    void setBlockSize(long size);
+    void setBlockSize(int size);
 
     void toFirst() throws IOException;
 
-    byte[] readBlock();
+    byte[] readBlock() throws IOException;
 
-    void writeBlock(byte[] in);
+    void writeBlock(byte[] in) throws IOException;
 
-    boolean hasNext();
+    boolean hasNext() throws IOException;
 
-    void close();
+    void close() throws IOException;
 }

@@ -44,7 +44,7 @@ public class XorCipher implements ICipher
     }
 
     @Override
-    public long getBlockSize() {
+    public int getBlockSize() {
         return 32;
     }
 }

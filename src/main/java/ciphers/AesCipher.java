@@ -110,7 +110,7 @@ public class AesCipher  implements ICipher
         }
     }
 
-    public long getBlockSize()
+    public int getBlockSize()
     {
         return 16;
     }

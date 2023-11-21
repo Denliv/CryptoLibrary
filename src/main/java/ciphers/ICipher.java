@@ -13,5 +13,5 @@ public interface ICipher
     byte[] decrypt(byte[] closedText);
     void setKey(byte[] key);
     byte[] getKey();
-    long getBlockSize();
+    int getBlockSize();
 }
