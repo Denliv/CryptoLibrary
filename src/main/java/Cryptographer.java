@@ -1,4 +1,7 @@
 import ciphers.ICipher;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import data_dealer.IDataDealer;
 
 import java.io.IOException;
@@ -6,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cryptographer {
-    private final List<ICipher> cipherList;
+    private List<ICipher> cipherList;
+    @JsonIgnore
     private IDataDealer dataDealer;
-
     public Cryptographer(List<ICipher> cipherList, IDataDealer dataDealer) {
         this.cipherList = new ArrayList<>();
         this.cipherList.addAll(cipherList);
@@ -16,7 +19,12 @@ public class Cryptographer {
     }
 
     public Cryptographer(IDataDealer dataDealer) {
-        this(null, dataDealer);
+        this(new ArrayList<>(), dataDealer);
+    }
+    @JsonCreator
+    public Cryptographer(@JsonProperty List<ICipher> cipherList)
+    {
+        this(cipherList, null);
     }
 
     public Cryptographer encrypt(ICipher cipher) {
@@ -63,5 +71,23 @@ public class Cryptographer {
             }
             while (plainText.length != 0);
         }
+    }
+
+
+    public List<ICipher> getCipherList() {
+        return cipherList;
+    }
+
+    public IDataDealer getDataDealer() {
+        return dataDealer;
+    }
+
+    public void setDataDealer(IDataDealer dataDealer) {
+        this.dataDealer = dataDealer;
+    }
+
+    public void setCipherList(List<ICipher> cipherList)
+    {
+        this.cipherList = cipherList;
     }
 }

@@ -113,4 +113,10 @@ public class AthenianCipher implements ICipher
             decompositionOfFirst[1] -= decompositionOfSecond[1] * count;
         }
     }
+
+    @Override
+    public byte[] getKey()
+    {
+        return key;
+    }
 }
