@@ -40,8 +40,6 @@ public class Cryptographer {
             while (dataDealer.hasNext()) {
                 var plainText = this.dataDealer.readBlock();
                 cipherText = cipher.encrypt(plainText);
-                if (cipherText.length > cipher.getBlockSize())
-                    throw new IllegalStateException("time to fix cipher)))");
                 this.dataDealer.writeBlock(cipherText);
             }
             do {
@@ -61,8 +59,6 @@ public class Cryptographer {
             while (dataDealer.hasNext()) {
                 var cipherText = dataDealer.readBlock();
                 plainText = cipher.decrypt(cipherText);
-                if (plainText.length > cipher.getBlockSize())
-                    throw new IllegalStateException("time to fix cipher)))");
                 dataDealer.writeBlock(plainText);
             }
             do {
