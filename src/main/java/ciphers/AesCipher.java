@@ -114,4 +114,10 @@ public class AesCipher  implements ICipher
     {
         return 16;
     }
+
+    @Override
+    public byte[] getKey()
+    {
+        return key;
+    }
 }
