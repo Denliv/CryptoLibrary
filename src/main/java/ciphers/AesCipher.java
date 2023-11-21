@@ -11,47 +11,36 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-public class AesCipher  implements ICipher
-{
+public class AesCipher implements ICipher {
     private byte[] key;
     private java.security.Key aesKey;
     private IvParameterSpec ivParameterSpec;
     private final Cipher aesCipher;
     private boolean encryptMode;
 
-    public AesCipher(byte[] key)
-    {
+    public AesCipher(byte[] key) {
         this.key = key;
         aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
         ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
-        try
-        {
+        try {
             aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        }
-        catch (NoSuchPaddingException | NoSuchAlgorithmException ignored)
-        {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException ignored) {
             throw new IllegalStateException("unknown error. contact the developer");
         }
         try {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
             encryptMode = false;
-        }
-        catch (InvalidKeyException | InvalidAlgorithmParameterException err)
-        {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
             throw new IllegalArgumentException("incorrect key format for aes cipher");
         }
     }
 
-    public byte[] encrypt(byte[] openText)
-    {
-        if (!encryptMode)
-        {
+    public byte[] encrypt(byte[] openText) {
+        if (!encryptMode) {
             try {
                 aesCipher.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = true;
-            }
-            catch (InvalidKeyException | InvalidAlgorithmParameterException ignored)
-            {
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
                 throw new IllegalStateException("unknown error. contact the developer");
             }
 
@@ -59,65 +48,52 @@ public class AesCipher  implements ICipher
         return mapTextToTextByAes(openText);
     }
 
-    public byte[] decrypt(byte[] closedText)
-    {
-        if (encryptMode)
-        {
+    public byte[] decrypt(byte[] closedText) {
+        if (encryptMode) {
             try {
                 aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = false;
-            }
-            catch (InvalidKeyException | InvalidAlgorithmParameterException ignored)
-            {
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
                 throw new IllegalStateException("unknown error. contact the developer");
             }
 
         }
         return mapTextToTextByAes(closedText);
     }
-    private byte[] mapTextToTextByAes(byte[] text)
-    {
+
+    private byte[] mapTextToTextByAes(byte[] text) {
         byte[] res;
         try {
-            if(text.length == 16)
+            if (text.length == 16)
                 res = aesCipher.update(text);
             else
                 res = aesCipher.doFinal(text);
-        }
-        catch (IllegalBlockSizeException err)
-        {
+        } catch (IllegalBlockSizeException err) {
             throw new IllegalArgumentException("block size not correct");
-        }
-        catch (BadPaddingException err)
-        {
+        } catch (BadPaddingException err) {
             throw new IllegalStateException("unknown error. contact the developer");
         }
         return res;
     }
-    public void setKey(byte[] key)
-    {
+
+    public void setKey(byte[] key) {
         this.key = key;
         aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
         ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
-        try
-        {
+        try {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
             encryptMode = false;
-        }
-        catch (InvalidKeyException | InvalidAlgorithmParameterException err)
-        {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
             throw new IllegalArgumentException("incorrect key format for aes cipher");
         }
     }
 
-    public int getBlockSize()
-    {
+    public int getBlockSize() {
         return 16;
     }
 
     @Override
-    public byte[] getKey()
-    {
+    public byte[] getKey() {
         return key;
     }
 
