@@ -3,7 +3,6 @@ package ciphers;
 public class XorCipher implements ICipher
 {
     private byte[] key;
-
     public XorCipher(byte[] key)
     {
         if (key.length != 32)
