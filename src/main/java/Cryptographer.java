@@ -64,4 +64,9 @@ public class Cryptographer {
             while (plainText.length != 0);
         }
     }
+
+    public void setDataDealer(IDataDealer dataDealer)
+    {
+        this.dataDealer = dataDealer;
+    }
 }
