@@ -50,7 +50,7 @@ public class Cryptographer {
         }
     }
 
-    public void terminalDecrypt(List<ICipher> cipherList, IDataDealer dataDealer) throws IOException {
+    public void terminalDecrypt() throws IOException {
         for (int i = cipherList.size() - 1; i >= 0; --i) {
             var cipher = cipherList.get(i);
             byte[] plainText;

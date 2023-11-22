@@ -17,11 +17,13 @@ public class AesCipher implements ICipher {
     private IvParameterSpec ivParameterSpec;
     private final Cipher aesCipher;
     private boolean encryptMode;
+    private boolean flag;
 
     public AesCipher(byte[] key) {
         this.key = key;
         aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
         ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
+        flag = false;
         try {
             aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         } catch (NoSuchPaddingException | NoSuchAlgorithmException ignored) {
@@ -40,6 +42,7 @@ public class AesCipher implements ICipher {
             try {
                 aesCipher.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = true;
+                flag = false;
             } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
                 throw new IllegalStateException("unknown error. contact the developer");
             }
@@ -53,6 +56,7 @@ public class AesCipher implements ICipher {
             try {
                 aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = false;
+                flag = false;
             } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
                 throw new IllegalStateException("unknown error. contact the developer");
             }
@@ -66,6 +70,16 @@ public class AesCipher implements ICipher {
         try {
             if (text.length == 16)
                 res = aesCipher.update(text);
+            else if (text.length == 0)
+            {
+                if (flag)
+                    res = new byte[0];
+                else
+                {
+                    flag = true;
+                    res = aesCipher.doFinal(text);
+                }
+            }
             else
                 res = aesCipher.doFinal(text);
         } catch (IllegalBlockSizeException err) {
@@ -80,6 +94,7 @@ public class AesCipher implements ICipher {
         this.key = key;
         aesKey = new SecretKeySpec(Arrays.copyOfRange(key, 0, 16), "AES");
         ivParameterSpec = new IvParameterSpec(Arrays.copyOfRange(key, 16, 32));
+        flag = false;
         try {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
             encryptMode = false;

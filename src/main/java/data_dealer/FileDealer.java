@@ -7,8 +7,8 @@ import java.io.RandomAccessFile;
 
 public class FileDealer implements IDataDealer {
     private int blockSize;
-    private final RandomAccessFile openText;
-    private final RandomAccessFile closedText;
+    private RandomAccessFile openText;
+    private RandomAccessFile closedText;
 
     public FileDealer(File openText, File closedText) throws FileNotFoundException {
         this.openText = new RandomAccessFile(openText, "r");
@@ -34,8 +34,8 @@ public class FileDealer implements IDataDealer {
     @Override
     public byte[] readBlock() throws IOException {
         //Для уменьшения массива, при недостаточном кол-ве данных
-        //var bytes = new byte[(int) Math.min(blockSize, openText.length() - openText.getFilePointer())];
-        var bytes = new byte[blockSize];
+        var bytes = new byte[(int) Math.min(blockSize, openText.length() - openText.getFilePointer())];
+        //var bytes = new byte[blockSize];
         openText.read(bytes);
         return bytes;
     }
@@ -52,8 +52,11 @@ public class FileDealer implements IDataDealer {
     }
 
     @Override
-    public void close() throws IOException {
-        openText.close();
-        closedText.close();
+    public void close() throws IOException
+    {
+        if (openText != null)
+            openText.close();
+        if (closedText != null)
+            closedText.close();
     }
 }
