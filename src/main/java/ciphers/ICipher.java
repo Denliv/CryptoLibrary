@@ -7,11 +7,14 @@ import serializer_details.ICipherSerializer;
 
 @JsonSerialize(using = ICipherSerializer.class)
 @JsonDeserialize(using = ICipherDeserializer.class)
-public interface ICipher
-{
+public interface ICipher {
     byte[] encrypt(byte[] openText);
+
     byte[] decrypt(byte[] closedText);
+
     void setKey(byte[] key);
+
     byte[] getKey();
+
     int getBlockSize();
 }

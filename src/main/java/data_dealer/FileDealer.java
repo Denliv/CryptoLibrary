@@ -9,10 +9,10 @@ public class FileDealer implements IDataDealer {
 
     public FileDealer(File openText, File closedText) throws FileNotFoundException {
         if (!openText.exists()) {
-            throw new IllegalArgumentException("File with " + openText.getName() +  "do not exists in " + openText.getParent());
+            throw new IllegalArgumentException("File with " + openText.getName() + "do not exists in " + openText.getParent());
         }
         if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.exists()) {
-            throw new IllegalArgumentException("File with " + closedText.getName() +  "already exists in " + closedText.getParent());
+            throw new IllegalArgumentException("File with " + closedText.getName() + "already exists in " + closedText.getParent());
         }
         this.openText = new RandomAccessFile(openText, "r");
         this.closedText = new RandomAccessFile(closedText, "rw");

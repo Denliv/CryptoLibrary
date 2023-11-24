@@ -12,6 +12,7 @@ public class Cryptographer {
     private List<ICipher> cipherList;
     @JsonIgnore
     private IDataDealer dataDealer;
+
     public Cryptographer(List<ICipher> cipherList, IDataDealer dataDealer) {
         this.cipherList = new ArrayList<>();
         this.cipherList.addAll(cipherList);
@@ -21,9 +22,9 @@ public class Cryptographer {
     public Cryptographer(IDataDealer dataDealer) {
         this(new ArrayList<>(), dataDealer);
     }
+
     @JsonCreator
-    public Cryptographer(@JsonProperty("cipherList") List<ICipher> cipherList)
-    {
+    public Cryptographer(@JsonProperty("cipherList") List<ICipher> cipherList) {
         this(cipherList, null);
     }
 

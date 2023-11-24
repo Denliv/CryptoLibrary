@@ -14,5 +14,5 @@ public interface IDataDealer extends AutoCloseable, Closeable {
 
     boolean hasNext() throws IOException;
 
-     void close() throws IOException;
+    void close() throws IOException;
 }

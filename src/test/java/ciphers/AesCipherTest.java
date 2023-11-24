@@ -1,23 +1,18 @@
 package ciphers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import keys.AesKeyGenerator;
+import key_generators.AesKeyGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class AesCipherTest
-{
+public class AesCipherTest {
     @Test
-    public void testAesWithSuperKeyEncryptWithNot16ByteOpenText()
-    {
+    public void testAesWithSuperKeyEncryptWithNot16ByteOpenText() {
         //Arrange
         byte[] byteArr = new byte[32];
-        for(int i = 0; i < 32; i++)
-        {
+        for (int i = 0; i < 32; i++) {
             byteArr[i] = (byte) i;
         }
         AesCipher cipher = new AesCipher(byteArr);
@@ -33,13 +28,12 @@ public class AesCipherTest
                 openText,
                 cipher.decrypt(cipherText));
     }
+
     @Test
-    public void testAesWithSuperKeyEncryptWith16ByteOpenText()
-    {
+    public void testAesWithSuperKeyEncryptWith16ByteOpenText() {
         //Arrange
         byte[] byteArr = new byte[32];
-        for(int i = 0; i < 32; i++)
-        {
+        for (int i = 0; i < 32; i++) {
             byteArr[i] = (byte) i;
         }
         AesCipher cipher = new AesCipher(byteArr);
@@ -55,11 +49,10 @@ public class AesCipherTest
                 "argadhwtuwrtusrj",
                 new String(openText2, StandardCharsets.UTF_8));
     }
+
     @Test
-    public void testAesWithSuperRandomKeyEncryptWithNot16ByteOpenText()
-    {
-        for (int i = 0; i < 10000; i++)
-        {
+    public void testAesWithSuperRandomKeyEncryptWithNot16ByteOpenText() {
+        for (int i = 0; i < 10000; i++) {
             //Arrange
             byte[] byteArr = new AesKeyGenerator().generate();
             AesCipher cipher = new AesCipher(byteArr);

@@ -5,11 +5,9 @@ import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 
-public class AthenianCipherTest
-{
+public class AthenianCipherTest {
     @Test
-    public void test1()
-    {
+    public void test1() {
         //Arrange
         byte[] openText = "kHrkn knhavug Bqqzon sdfhgshDDGHDD   5558абвГД".getBytes(StandardCharsets.UTF_8);
         byte[] closedText = "fWafo fowbmjt Exxyro dkqwtdwKKTWKK   5558абвГД".getBytes(StandardCharsets.UTF_8);
