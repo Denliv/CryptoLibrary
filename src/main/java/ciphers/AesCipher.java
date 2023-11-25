@@ -77,9 +77,7 @@ public class AesCipher implements ICipher {
             if (text.length != 0)
             {
                 if (flag)
-                {
                     flag = false;
-                }
                 res = aesCipher.update(text);
             }
             else
