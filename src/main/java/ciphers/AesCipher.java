@@ -26,14 +26,14 @@ public class AesCipher implements ICipher {
         flag = false;
         try {
             aesCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException ignored) {
-            throw new IllegalStateException("unknown error. contact the developer");
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException err) {
+            throw new IllegalStateException("unknown error. contact the developer", err);
         }
         try {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
             encryptMode = false;
         } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
-            throw new IllegalArgumentException("incorrect key format for aes cipher");
+            throw new IllegalArgumentException("incorrect key format for aes cipher", err);
         }
     }
 
@@ -43,8 +43,8 @@ public class AesCipher implements ICipher {
                 aesCipher.init(Cipher.ENCRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = true;
                 flag = false;
-            } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
-                throw new IllegalStateException("unknown error. contact the developer");
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
+                throw new IllegalStateException("unknown error. contact the developer", err);
             }
 
         }
@@ -57,8 +57,8 @@ public class AesCipher implements ICipher {
                 aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
                 encryptMode = false;
                 flag = false;
-            } catch (InvalidKeyException | InvalidAlgorithmParameterException ignored) {
-                throw new IllegalStateException("unknown error. contact the developer");
+            } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
+                throw new IllegalStateException("unknown error. contact the developer", err);
             }
 
         }
@@ -67,23 +67,33 @@ public class AesCipher implements ICipher {
 
     private byte[] mapTextToTextByAes(byte[] text) {
         byte[] res;
-        //todo добавить проверку на выход за пределы массива
-        try {
+        try
+        {
+            if (text.length > 16)
+            {
+                throw new IllegalArgumentException("size of open text larger block size");
+            }
             if (text.length == 16)
                 res = aesCipher.update(text);
-            else if (text.length == 0) {
+            else if (text.length == 0)
+            {
                 if (flag)
                     res = new byte[0];
-                else {
+                else
+                {
                     flag = true;
                     res = aesCipher.doFinal(text);
                 }
             } else
                 res = aesCipher.doFinal(text);
-        } catch (IllegalBlockSizeException err) {
-            throw new IllegalArgumentException("block size not correct");
-        } catch (BadPaddingException err) {
-            throw new IllegalStateException("unknown error. contact the developer");
+        }
+        catch (IllegalBlockSizeException err)
+        {
+            throw new IllegalArgumentException("block size not correct", err);
+        }
+        catch (BadPaddingException err)
+        {
+            throw new IllegalStateException("unknown error. contact the developer", err);
         }
         return res;
     }
@@ -97,7 +107,7 @@ public class AesCipher implements ICipher {
             aesCipher.init(Cipher.DECRYPT_MODE, aesKey, ivParameterSpec);
             encryptMode = false;
         } catch (InvalidKeyException | InvalidAlgorithmParameterException err) {
-            throw new IllegalArgumentException("incorrect key format for aes cipher");
+            throw new IllegalArgumentException("incorrect key format for aes cipher", err);
         }
     }
 

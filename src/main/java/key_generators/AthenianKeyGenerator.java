@@ -11,9 +11,6 @@ public class AthenianKeyGenerator implements IKeyGenerator {
     public AthenianKeyGenerator() {
         random = new Random();
         nonZeroDivisors = new HashMap<>();
-        //nonZeroDivisors = Map.of(0, 1,
-          //      1, 3,
-             //   2, 5);
         nonZeroDivisors.put(0, 1);
         nonZeroDivisors.put(1, 3);
         nonZeroDivisors.put(2, 5);

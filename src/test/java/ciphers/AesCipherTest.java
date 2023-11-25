@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class AesCipherTest {
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testAesWithSuperKeyEncryptWithNot16ByteOpenText() {
         //Arrange
         byte[] byteArr = new byte[32];
@@ -17,16 +17,8 @@ public class AesCipherTest {
         }
         AesCipher cipher = new AesCipher(byteArr);
         byte[] openText = "argadhwtuwrtusrjj".getBytes(StandardCharsets.UTF_8);
-        //Act
+        //Act + assert
         byte[] cipherText = cipher.encrypt(openText);
-        //Assert
-
-        Assert.assertFalse(
-                Arrays.equals(cipherText, openText));
-
-        Assert.assertArrayEquals(
-                openText,
-                cipher.decrypt(cipherText));
     }
 
     @Test
@@ -50,22 +42,16 @@ public class AesCipherTest {
                 new String(openText2, StandardCharsets.UTF_8));
     }
 
-    @Test
-    public void testAesWithSuperRandomKeyEncryptWithNot16ByteOpenText() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAesWithSuperRandomKeyEncryptWithNot16ByteOpenText()
+    {
         for (int i = 0; i < 10_000; i++) {
             //Arrange
             byte[] byteArr = new AesKeyGenerator().generate();
             AesCipher cipher = new AesCipher(byteArr);
             byte[] openText = "argadhwtuwrtusrjjфапыфвпрвыаорвровпроasrtgetysrt".getBytes(StandardCharsets.UTF_8);
-            //Act
+            //Act + Assert
             byte[] cipherText = cipher.encrypt(openText);
-            //Assert
-            Assert.assertFalse(
-                    Arrays.equals(cipherText, openText));
-
-            Assert.assertArrayEquals(
-                    openText,
-                    cipher.decrypt(cipherText));
         }
     }
 }
