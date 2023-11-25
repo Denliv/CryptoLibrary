@@ -74,19 +74,24 @@ public class AesCipher implements ICipher {
             {
                 throw new IllegalArgumentException("size of open text larger block size");
             }
-            if (text.length == _BLOCK_SIZE)
+            if (text.length != 0)
+            {
+                if (flag)
+                {
+                    flag = false;
+                }
                 res = aesCipher.update(text);
-            else if (text.length == 0)
+            }
+            else
             {
                 if (flag)
                     res = new byte[0];
                 else
                 {
                     flag = true;
-                    res = aesCipher.doFinal(text);
+                    res = aesCipher.doFinal();
                 }
-            } else
-                res = aesCipher.doFinal(text);
+            }
         }
         catch (IllegalBlockSizeException err)
         {
