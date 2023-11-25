@@ -1,19 +1,16 @@
 package ciphers;
 
-import keys.XorKeyGenerator;
+import key_generators.XorKeyGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public class XorCipherTest
-{
+public class XorCipherTest {
     @Test
-    public void test1()
-    {
-        for (int i = 0; i < 10000; i++)
-        {
+    public void test1() {
+        for (int i = 0; i < 10000; i++) {
             //Arrange
             byte[] byteArr = new XorKeyGenerator().generate();
             XorCipher cipher = new XorCipher(byteArr);

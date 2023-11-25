@@ -1,16 +1,14 @@
-package keys;
+package key_generators;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class AthenianKeyGenerator implements IKeyGenerator
-{
+public class AthenianKeyGenerator implements IKeyGenerator {
     private final Map<Integer, Integer> nonZeroDivisors;
     private final Random random;
 
-    public AthenianKeyGenerator()
-    {
+    public AthenianKeyGenerator() {
         random = new Random();
         nonZeroDivisors = new HashMap<>();
         //nonZeroDivisors = Map.of(0, 1,
@@ -31,15 +29,14 @@ public class AthenianKeyGenerator implements IKeyGenerator
     }
 
     @Override
-    public byte[] generate()
-    {
+    public byte[] generate() {
         int a = random.nextInt(12);
         a = nonZeroDivisors.get(a);
         byte b = (byte) random.nextInt(26);
         return new byte[]{(byte) a, b};
     }
-    public byte[] create(int a, int b)
-    {
+
+    public byte[] create(int a, int b) {
         return new byte[]{(byte) a, (byte) b};
     }
 }

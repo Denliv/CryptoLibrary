@@ -1,20 +1,16 @@
-package keys;
+package key_generators;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class XorKeyGenerator implements IKeyGenerator
-{
+public class XorKeyGenerator implements IKeyGenerator {
     private final SecureRandom secureRandom;
 
-    public XorKeyGenerator()
-    {
+    public XorKeyGenerator() {
         secureRandom = new SecureRandom();
     }
+
     @Override
-    public byte[] generate()
-    {
+    public byte[] generate() {
         byte[] key = new byte[32];
         secureRandom.nextBytes(key);
         return key;

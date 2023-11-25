@@ -1,9 +1,6 @@
 package data_dealer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 
 public class FileDealer implements IDataDealer {
     private int blockSize;
@@ -11,13 +8,29 @@ public class FileDealer implements IDataDealer {
     private RandomAccessFile closedText;
 
     public FileDealer(File openText, File closedText) throws FileNotFoundException {
+        if (!openText.exists()) {
+            throw new IllegalArgumentException("File with " + openText.getName() + "do not exists in " + openText.getParent());
+        }
+        if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.exists()) {
+            throw new IllegalArgumentException("File with " + closedText.getName() + "already exists in " + closedText.getParent());
+        }
         this.openText = new RandomAccessFile(openText, "r");
         this.closedText = new RandomAccessFile(closedText, "rw");
+        if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.length() == 0) {
+            try (FileInputStream input = new FileInputStream(openText);
+                 FileOutputStream output = new FileOutputStream(closedText)) {
+                while (input.available() > 0) {
+                    int data = input.read();
+                    output.write(data);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public FileDealer(String openText, String closedText) throws FileNotFoundException {
-        this.openText = new RandomAccessFile(openText, "r");
-        this.closedText = new RandomAccessFile(closedText, "rw");
+        this(new File(openText), new File(closedText));
     }
 
     @Override
@@ -29,13 +42,13 @@ public class FileDealer implements IDataDealer {
     public void toFirst() throws IOException {
         if (openText.length() == 0 || openText.getFilePointer() == 0) return;
         this.openText.seek(0L);
+        if (closedText.length() == 0 || closedText.getFilePointer() == 0) return;
+        this.closedText.seek(0L);
     }
 
     @Override
     public byte[] readBlock() throws IOException {
-        //Для уменьшения массива, при недостаточном кол-ве данных
         var bytes = new byte[(int) Math.min(blockSize, openText.length() - openText.getFilePointer())];
-        //var bytes = new byte[blockSize];
         openText.read(bytes);
         return bytes;
     }
@@ -52,8 +65,7 @@ public class FileDealer implements IDataDealer {
     }
 
     @Override
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         if (openText != null)
             openText.close();
         if (closedText != null)

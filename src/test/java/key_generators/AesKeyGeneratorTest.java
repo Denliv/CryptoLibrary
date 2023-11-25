@@ -1,17 +1,13 @@
-package ciphers;
+package key_generators;
 
-import keys.AesKeyGenerator;
-import keys.IKeyGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-public class AesKeyGeneratorTest
-{
+public class AesKeyGeneratorTest {
     @Test
-    public void generateKeysNotEqualsTest()
-    {
+    public void generateKeysNotEqualsTest() {
         //Arrange
         IKeyGenerator generator = new AesKeyGenerator();
         byte[] key1 = generator.generate();
@@ -21,9 +17,9 @@ public class AesKeyGeneratorTest
         Assert.assertEquals(32, key1.length);
         Assert.assertFalse(Arrays.equals(key1, key2));
     }
+
     @Test
-    public void generateKeyWithStringTest()
-    {
+    public void generateKeyWithStringTest() {
         //Arrange
         AesKeyGenerator generator = new AesKeyGenerator();
         byte[] key1 = generator.create("KEY", "KEY");

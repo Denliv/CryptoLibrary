@@ -71,17 +71,14 @@ public class AesCipher implements ICipher {
         try {
             if (text.length == 16)
                 res = aesCipher.update(text);
-            else if (text.length == 0)
-            {
+            else if (text.length == 0) {
                 if (flag)
                     res = new byte[0];
-                else
-                {
+                else {
                     flag = true;
                     res = aesCipher.doFinal(text);
                 }
-            }
-            else
+            } else
                 res = aesCipher.doFinal(text);
         } catch (IllegalBlockSizeException err) {
             throw new IllegalArgumentException("block size not correct");

@@ -1,11 +1,9 @@
 package ciphers;
 
-public class AthenianCipher implements ICipher
-{
+public class AthenianCipher implements ICipher {
     private byte[] key;
 
-    public AthenianCipher(byte[] key)
-    {
+    public AthenianCipher(byte[] key) {
         if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
             throw new IllegalArgumentException("not correct key");
         int[] NODE = getBezuCoefficients(key[0], 26);
@@ -15,31 +13,27 @@ public class AthenianCipher implements ICipher
     }
 
     @Override
-    public byte[] encrypt(byte[] openText)
-    {
+    public byte[] encrypt(byte[] openText) {
         return mapTextToText(openText, true);
     }
 
     @Override
-    public byte[] decrypt(byte[] closedText)
-    {
+    public byte[] decrypt(byte[] closedText) {
         return mapTextToText(closedText, false);
     }
-    private byte[] mapTextToText(byte[] openText, boolean encryptFlag)
-    {
+
+    private byte[] mapTextToText(byte[] openText, boolean encryptFlag) {
         if (openText.length == 0)
             return new byte[0];
         byte[] closedText = new byte[openText.length];
-        for (int i = 0; i < openText.length; i++)
-        {
+        for (int i = 0; i < openText.length; i++) {
             closedText[i] = encryptOrDecryptInAthenianCipher(encryptFlag, openText[i]);
         }
         return closedText;
     }
 
     @Override
-    public void setKey(byte[] key)
-    {
+    public void setKey(byte[] key) {
         if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
             throw new IllegalArgumentException("not correct key");
         int[] NODE = getBezuCoefficients(key[0], 26);
@@ -52,21 +46,16 @@ public class AthenianCipher implements ICipher
     public int getBlockSize() {
         return 32;
     }
-    private byte encryptOrDecryptInAthenianCipher(boolean flagOfEncrypt, byte plainText)
-    {
-        byte firstChar;
-        if (plainText <= 'z' && plainText >= 'a')
-        {
-            firstChar = 'a';
-        }
-        else if (plainText <= 'Z' && plainText >= 'A')
-        {
-            firstChar = 'A';
-        }
-        else return plainText;
 
-        if (flagOfEncrypt)
-        {
+    private byte encryptOrDecryptInAthenianCipher(boolean flagOfEncrypt, byte plainText) {
+        byte firstChar;
+        if (plainText <= 'z' && plainText >= 'a') {
+            firstChar = 'a';
+        } else if (plainText <= 'Z' && plainText >= 'A') {
+            firstChar = 'A';
+        } else return plainText;
+
+        if (flagOfEncrypt) {
             return ((byte) ((((plainText - firstChar) * key[0] + key[1]) % 26) + firstChar));
         }
 
@@ -80,15 +69,14 @@ public class AthenianCipher implements ICipher
         //считаем x - b
         int differenceOfCipherTextAndSecondInKey = ((plainText - firstChar) -  key[1]);
         //считаем (x - b) * a^-1 по модулю 26
-        while(differenceOfCipherTextAndSecondInKey < 0)
-        {
+        while (differenceOfCipherTextAndSecondInKey < 0) {
             differenceOfCipherTextAndSecondInKey += 26;
         }
-        return ((byte)(((differenceOfCipherTextAndSecondInKey * reverseElem) % 26) + firstChar));
+        return ((byte) (((differenceOfCipherTextAndSecondInKey * reverseElem) % 26) + firstChar));
 
     }
     private static int[] getBezuCoefficients(int first, int second)
-    {
+    private static byte[] getBezuCoefficients(byte first, byte second) {
         if (first == 0 && second == 0) {
             throw new IllegalArgumentException();
         }
@@ -97,9 +85,6 @@ public class AthenianCipher implements ICipher
         int[] decompositionOfFirst = new int[]{1, 0};
         int[] decompositionOfSecond = new int[]{0, 1};
         while(second != 0)
-        {
-            if (first < second)
-            {
                 int buffer = first;
                 first = second;
                 second = buffer;
@@ -118,8 +103,7 @@ public class AthenianCipher implements ICipher
     }
 
     @Override
-    public byte[] getKey()
-    {
+    public byte[] getKey() {
         return key;
     }
 }
