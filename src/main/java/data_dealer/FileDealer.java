@@ -1,21 +1,24 @@
 package data_dealer;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 
 public class FileDealer implements IDataDealer {
+    private long textSize;
     private int blockSize;
     private RandomAccessFile openText;
     private RandomAccessFile closedText;
 
-    public FileDealer(File openText, File closedText) throws FileNotFoundException {
+    public FileDealer(File openText, File closedText) throws IOException {
         if (!openText.exists()) {
-            throw new IllegalArgumentException("File with " + openText.getName() + "do not exists in " + openText.getParent());
+            throw new IllegalArgumentException("File with " + openText.getName() + " do not exists in " + openText.getParent());
         }
         if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.exists()) {
-            throw new IllegalArgumentException("File with " + closedText.getName() + "already exists in " + closedText.getParent());
+            throw new IllegalArgumentException("File with " + closedText.getName() + " already exists in " + closedText.getParent());
         }
-        this.openText = new RandomAccessFile(openText, "r");
         this.closedText = new RandomAccessFile(closedText, "rw");
+        this.openText = new RandomAccessFile(closedText, "r");
         if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.length() == 0) {
             try (FileInputStream input = new FileInputStream(openText);
                  FileOutputStream output = new FileOutputStream(closedText)) {
@@ -27,9 +30,10 @@ public class FileDealer implements IDataDealer {
                 throw new RuntimeException(e);
             }
         }
+        this.textSize = this.closedText.length();
     }
 
-    public FileDealer(String openText, String closedText) throws FileNotFoundException {
+    public FileDealer(String openText, String closedText) throws IOException {
         this(new File(openText), new File(closedText));
     }
 
@@ -40,10 +44,12 @@ public class FileDealer implements IDataDealer {
 
     @Override
     public void toFirst() throws IOException {
+
         if (openText.length() == 0 || openText.getFilePointer() == 0) return;
         this.openText.seek(0L);
         if (closedText.length() == 0 || closedText.getFilePointer() == 0) return;
         this.closedText.seek(0L);
+        textSize = openText.length();
     }
 
     @Override
@@ -57,11 +63,14 @@ public class FileDealer implements IDataDealer {
     public void writeBlock(byte[] in) throws IOException {
         if (in.length > blockSize) throw new IllegalArgumentException("byte[] size should be <= block size\n");
         closedText.write(in);
+        if (!hasNext()) {
+            closedText.getChannel().truncate(closedText.getFilePointer());
+        }
     }
 
     @Override
     public boolean hasNext() throws IOException {
-        return openText.length() > 0 && openText.getFilePointer() < openText.length();
+        return openText.length() > 0 && openText.getFilePointer() < textSize;
     }
 
     @Override
