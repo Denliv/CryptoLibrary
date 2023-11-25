@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cryptographer {
-    private List<ICipher> cipherList;
+    private final List<ICipher> cipherList;
     @JsonIgnore
     private IDataDealer dataDealer;
     public Cryptographer(List<ICipher> cipherList, IDataDealer dataDealer) {

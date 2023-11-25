@@ -19,7 +19,7 @@ public class AesKeyGenerator implements IKeyGenerator
         }
         catch (NoSuchAlgorithmException err)
         {
-            throw new IllegalStateException("unknown error. contact the developer");
+            throw new IllegalStateException("unknown error. contact the developer", err);
         }
     }
 

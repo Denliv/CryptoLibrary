@@ -67,6 +67,7 @@ public class AesCipher implements ICipher {
 
     private byte[] mapTextToTextByAes(byte[] text) {
         byte[] res;
+        //todo добавить проверку на выход за пределы массива
         try {
             if (text.length == 16)
                 res = aesCipher.update(text);

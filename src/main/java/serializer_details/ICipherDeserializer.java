@@ -55,7 +55,7 @@ public class ICipherDeserializer extends StdDeserializer<ICipher>
         }
         try
         {
-            return (ICipher) Class.forName(cipherName).getConstructor(byte[].class).newInstance((Object) key);
+            return (ICipher) Class.forName(cipherName).getConstructor(byte[].class).newInstance(key);
         }
         catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
                IllegalAccessException e)

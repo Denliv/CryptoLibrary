@@ -58,7 +58,7 @@ public class AesCipherTest
     @Test
     public void testAesWithSuperRandomKeyEncryptWithNot16ByteOpenText()
     {
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 10_000; i++)
         {
             //Arrange
             byte[] byteArr = new AesKeyGenerator().generate();

@@ -8,7 +8,7 @@ public class AthenianCipher implements ICipher
     {
         if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
             throw new IllegalArgumentException("not correct key");
-        byte[] NODE = getBezuCoefficients(key[0], (byte) 26);
+        int[] NODE = getBezuCoefficients(key[0], 26);
         if ((key[0] * NODE[0] + 26 * NODE[1]) != 1)
             throw new IllegalArgumentException("not correct key");
         this.key = key;
@@ -42,7 +42,7 @@ public class AthenianCipher implements ICipher
     {
         if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
             throw new IllegalArgumentException("not correct key");
-        byte[] NODE = getBezuCoefficients(key[0], (byte) 26);
+        int[] NODE = getBezuCoefficients(key[0], 26);
         if ((key[0] * NODE[0] + 26 * NODE[1]) != 1)
             throw new IllegalArgumentException("not correct key");
         this.key = key;
@@ -54,7 +54,6 @@ public class AthenianCipher implements ICipher
     }
     private byte encryptOrDecryptInAthenianCipher(boolean flagOfEncrypt, byte plainText)
     {
-        byte[] NODE = getBezuCoefficients(key[0], (byte) 26);
         byte firstChar;
         if (plainText <= 'z' && plainText >= 'a')
         {
@@ -71,14 +70,15 @@ public class AthenianCipher implements ICipher
             return ((byte) ((((plainText - firstChar) * key[0] + key[1]) % 26) + firstChar));
         }
 
-        byte reverseElem = NODE[0];
+        int[] NODE = getBezuCoefficients(key[0], 26);
+        int reverseElem = NODE[0];
         while(reverseElem < 0)
         {
-            reverseElem += (byte) 26;
+            reverseElem += 26;
         }
-        reverseElem = (byte) (reverseElem % 26);
+        reverseElem = (reverseElem % 26);
         //считаем x - b
-        byte differenceOfCipherTextAndSecondInKey = (byte) ((plainText - firstChar) -  key[1]);
+        int differenceOfCipherTextAndSecondInKey = ((plainText - firstChar) -  key[1]);
         //считаем (x - b) * a^-1 по модулю 26
         while(differenceOfCipherTextAndSecondInKey < 0)
         {
@@ -87,31 +87,34 @@ public class AthenianCipher implements ICipher
         return ((byte)(((differenceOfCipherTextAndSecondInKey * reverseElem) % 26) + firstChar));
 
     }
-    private static byte[] getBezuCoefficients(byte first, byte second)
+    private static int[] getBezuCoefficients(int first, int second)
     {
-        if (first == 0 && second == 0) throw new IllegalArgumentException();
-        first = (byte) Math.abs(first);
-        second = (byte) Math.abs(second);
-        byte[] decompositionOfFirst = new byte[]{1, 0};
-        byte[] decompositionOfSecond = new byte[]{0, 1};
-        while(true)
+        if (first == 0 && second == 0) {
+            throw new IllegalArgumentException();
+        }
+        first = Math.abs(first);
+        second = Math.abs(second);
+        int[] decompositionOfFirst = new int[]{1, 0};
+        int[] decompositionOfSecond = new int[]{0, 1};
+        while(second != 0)
         {
             if (first < second)
             {
-                byte buffer = first;
+                int buffer = first;
                 first = second;
                 second = buffer;
-                byte [] bufferOfCoefficients = decompositionOfFirst;
+                int [] bufferOfCoefficients = decompositionOfFirst;
                 decompositionOfFirst = decompositionOfSecond;
                 decompositionOfSecond = bufferOfCoefficients;
             }
-            if (second == 0)
-                return decompositionOfFirst;
-            byte count = (byte) ( first / second);
-            first =(byte) (first % second);
-            decompositionOfFirst[0] -= decompositionOfSecond[0] * count;
-            decompositionOfFirst[1] -= decompositionOfSecond[1] * count;
+            if (second != 0) {
+                int count = (first / second);
+                first =  (first % second);
+                decompositionOfFirst[0] -= decompositionOfSecond[0] * count;
+                decompositionOfFirst[1] -= decompositionOfSecond[1] * count;
+            }
         }
+        return decompositionOfFirst;
     }
 
     @Override
