@@ -61,13 +61,12 @@ public class AthenianCipher implements ICipher {
 
         int[] NODE = getBezuCoefficients(key[0], 26);
         int reverseElem = NODE[0];
-        while(reverseElem < 0)
-        {
+        while (reverseElem < 0) {
             reverseElem += 26;
         }
         reverseElem = (reverseElem % 26);
         //считаем x - b
-        int differenceOfCipherTextAndSecondInKey = ((plainText - firstChar) -  key[1]);
+        int differenceOfCipherTextAndSecondInKey = ((plainText - firstChar) - key[1]);
         //считаем (x - b) * a^-1 по модулю 26
         while (differenceOfCipherTextAndSecondInKey < 0) {
             differenceOfCipherTextAndSecondInKey += 26;
@@ -75,8 +74,8 @@ public class AthenianCipher implements ICipher {
         return ((byte) (((differenceOfCipherTextAndSecondInKey * reverseElem) % 26) + firstChar));
 
     }
-    private static int[] getBezuCoefficients(int first, int second)
-    private static byte[] getBezuCoefficients(byte first, byte second) {
+
+    private static int[] getBezuCoefficients(int first, int second) {
         if (first == 0 && second == 0) {
             throw new IllegalArgumentException();
         }
@@ -84,17 +83,16 @@ public class AthenianCipher implements ICipher {
         second = Math.abs(second);
         int[] decompositionOfFirst = new int[]{1, 0};
         int[] decompositionOfSecond = new int[]{0, 1};
-        while(second != 0)
-                int buffer = first;
-                first = second;
-                second = buffer;
-                int [] bufferOfCoefficients = decompositionOfFirst;
-                decompositionOfFirst = decompositionOfSecond;
-                decompositionOfSecond = bufferOfCoefficients;
-            }
+        while (second != 0) {
+            int buffer = first;
+            first = second;
+            second = buffer;
+            int[] bufferOfCoefficients = decompositionOfFirst;
+            decompositionOfFirst = decompositionOfSecond;
+            decompositionOfSecond = bufferOfCoefficients;
             if (second != 0) {
                 int count = (first / second);
-                first =  (first % second);
+                first = (first % second);
                 decompositionOfFirst[0] -= decompositionOfSecond[0] * count;
                 decompositionOfFirst[1] -= decompositionOfSecond[1] * count;
             }
