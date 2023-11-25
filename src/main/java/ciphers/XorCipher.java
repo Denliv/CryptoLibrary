@@ -2,6 +2,7 @@ package ciphers;
 
 public class XorCipher implements ICipher {
     private byte[] key;
+    private static final int _BLOCK_SIZE = 32;
 
     public XorCipher(byte[] key) {
         if (key.length != 32)
@@ -11,11 +12,15 @@ public class XorCipher implements ICipher {
 
     @Override
     public byte[] encrypt(byte[] openText) {
+        if (openText.length > _BLOCK_SIZE)
+            throw new IllegalArgumentException("size of open text larger block size");
         return xorByteArrays(openText);
     }
 
     @Override
     public byte[] decrypt(byte[] closedText) {
+        if (closedText.length > _BLOCK_SIZE)
+            throw new IllegalArgumentException("size of open text larger block size");
         return xorByteArrays(closedText);
     }
 
@@ -41,6 +46,6 @@ public class XorCipher implements ICipher {
 
     @Override
     public int getBlockSize() {
-        return 32;
+        return _BLOCK_SIZE;
     }
 }

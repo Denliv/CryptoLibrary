@@ -2,6 +2,7 @@ package ciphers;
 
 public class AthenianCipher implements ICipher {
     private byte[] key;
+    private static final int _BLOCK_SIZE = 32;
 
     public AthenianCipher(byte[] key) {
         if (key[0] <= 0 || key[0] >= 26 || key[1] < 0 || key[1] >= 26)
@@ -25,6 +26,8 @@ public class AthenianCipher implements ICipher {
     private byte[] mapTextToText(byte[] openText, boolean encryptFlag) {
         if (openText.length == 0)
             return new byte[0];
+        if (openText.length > _BLOCK_SIZE)
+            throw new IllegalArgumentException("size of open text larger block size");
         byte[] closedText = new byte[openText.length];
         for (int i = 0; i < openText.length; i++) {
             closedText[i] = encryptOrDecryptInAthenianCipher(encryptFlag, openText[i]);
@@ -44,7 +47,7 @@ public class AthenianCipher implements ICipher {
 
     @Override
     public int getBlockSize() {
-        return 32;
+        return _BLOCK_SIZE;
     }
 
     private byte encryptOrDecryptInAthenianCipher(boolean flagOfEncrypt, byte plainText) {

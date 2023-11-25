@@ -9,8 +9,8 @@ public class AthenianCipherTest {
     @Test
     public void test1() {
         //Arrange
-        byte[] openText = "kHrkn knhavug Bqqzon sdfhgshDDGHDD   5558абвГД".getBytes(StandardCharsets.UTF_8);
-        byte[] closedText = "fWafo fowbmjt Exxyro dkqwtdwKKTWKK   5558абвГД".getBytes(StandardCharsets.UTF_8);
+        byte[] openText= "kHrkn knhavugф ".getBytes(StandardCharsets.UTF_8);
+        byte[] closedText = "fWafo fowbmjtф ".getBytes(StandardCharsets.UTF_8);
         AthenianCipher cipher = new AthenianCipher(new byte[]{3, 1});
         //Act
         byte[] newClosedText = cipher.encrypt(openText);

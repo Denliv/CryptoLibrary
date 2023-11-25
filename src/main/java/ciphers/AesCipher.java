@@ -18,6 +18,7 @@ public class AesCipher implements ICipher {
     private final Cipher aesCipher;
     private boolean encryptMode;
     private boolean flag;
+    private static final int _BLOCK_SIZE = 16;
 
     public AesCipher(byte[] key) {
         this.key = key;
@@ -69,11 +70,11 @@ public class AesCipher implements ICipher {
         byte[] res;
         try
         {
-            if (text.length > 16)
+            if (text.length > _BLOCK_SIZE)
             {
                 throw new IllegalArgumentException("size of open text larger block size");
             }
-            if (text.length == 16)
+            if (text.length == _BLOCK_SIZE)
                 res = aesCipher.update(text);
             else if (text.length == 0)
             {
@@ -93,7 +94,7 @@ public class AesCipher implements ICipher {
         }
         catch (BadPaddingException err)
         {
-            throw new IllegalStateException("unknown error. contact the developer", err);
+            throw new IllegalStateException("badPadding", err);
         }
         return res;
     }
@@ -112,7 +113,7 @@ public class AesCipher implements ICipher {
     }
 
     public int getBlockSize() {
-        return 16;
+        return _BLOCK_SIZE;
     }
 
     @Override
