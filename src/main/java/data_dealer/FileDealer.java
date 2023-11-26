@@ -1,8 +1,6 @@
 package data_dealer;
 
 import java.io.*;
-import java.nio.channels.FileChannel;
-import java.nio.file.StandardOpenOption;
 
 public class FileDealer implements IDataDealer {
     private long textSize;

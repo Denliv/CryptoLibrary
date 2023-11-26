@@ -62,11 +62,11 @@ public class Cryptographer {
                 plainText = cipher.decrypt(cipherText);
                 dataDealer.writeBlock(plainText);
             }
-//            do {
-//                plainText = cipher.decrypt(new byte[0]);
-//                this.dataDealer.writeBlock(plainText);
-//            }
-//            while (plainText.length != 0);
+            do {
+                plainText = cipher.decrypt(new byte[0]);
+                this.dataDealer.writeBlock(plainText);
+            }
+            while (plainText.length != 0);
         }
     }
 
