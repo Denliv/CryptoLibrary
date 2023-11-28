@@ -16,28 +16,30 @@ public class Program {
         //Действия отправителя
         byte[] keyAthenian = new AthenianKeyGenerator().generate();
         byte[] keyXor = new XorKeyGenerator().generate();
-        byte[] keyAes = new AesKeyGenerator().generate();
+        byte[] keyAes1 = new AesKeyGenerator().generate();
+        byte[] keyAes2 = new AesKeyGenerator().generate();
         ICipher cipherAthenian = new AthenianCipher(keyAthenian);
         ICipher cipherXor = new XorCipher(keyXor);
-        ICipher cipherAes = new AesCipher(keyAes);
+        ICipher cipherAes1 = new AesCipher(keyAes1);
+        ICipher cipherAes2 = new AesCipher(keyAes2);
 
         try (IDataDealer dealer = new FileDealer(
-                new File("C:\\Users\\Даниил\\Desktop\\Задание 1.pdf"),
-                new File("C:\\Users\\Даниил\\Desktop\\Задание 1_encrypted.pdf"))
+                new File("C:\\Users\\User\\Downloads\\demo.zip"),
+                new File("C:\\Users\\User\\Downloads\\1\\demo_encrypted.zip"))
         ) {
             Cryptographer cryptographer = new Cryptographer(dealer);
-            cryptographer.encrypt(cipherAes).encrypt(cipherXor);
+            cryptographer.encrypt(cipherAes1).encrypt(cipherXor).encrypt(cipherAthenian).encrypt(cipherAes2);
             cryptographer.terminalEncrypt();
             CryptographerSerializer cs = new CryptographerSerializer();
-            cs.serialize(cryptographer, new File("C:\\Users\\Даниил\\Desktop\\"), "Задание 1");
+            cs.serialize(cryptographer, "C:\\Users\\User\\Downloads\\1", "key");
         }
 
         //Действия получателя
         CryptographerSerializer cs = new CryptographerSerializer();
-        Cryptographer cryptographer = cs.deserialize(new File("C:\\Users\\Даниил\\Desktop\\"), "Задание 1");
+        Cryptographer cryptographer = cs.deserialize("C:\\Users\\User\\Downloads\\1", "key");
         try (IDataDealer dealer = new FileDealer(
-                new File("C:\\Users\\Даниил\\Desktop\\Задание 1_encrypted.pdf"),
-                new File("C:\\Users\\Даниил\\Desktop\\Задание 1_decrypted.pdf"))
+                new File("C:\\Users\\User\\Downloads\\1\\demo_encrypted.zip"),
+                new File("C:\\Users\\User\\Downloads\\1\\demo_decrypted.zip"))
         ) {
             cryptographer.setDataDealer(dealer);
             cryptographer.terminalDecrypt();

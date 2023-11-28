@@ -20,8 +20,11 @@ public class CryptographerSerializerTest
         //Arrange
         CryptographerSerializer serializer = new CryptographerSerializer();
         File cryptographerJson = new File("src\\test\\java\\cryptographer.json");
-        if (cryptographerJson.exists())
-            cryptographerJson.delete();
+        if (cryptographerJson.exists()) {
+            if (!cryptographerJson.delete()) {
+                Assert.fail();
+            }
+        }
         Cryptographer cryptographer = new Cryptographer(
                 List.of(
                         new AesCipher(new AesKeyGenerator().generate()),

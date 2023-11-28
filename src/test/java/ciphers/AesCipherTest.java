@@ -22,7 +22,7 @@ public class AesCipherTest {
         AesCipher cipher = new AesCipher(byteArr);
         byte[] openText = "argadhwtuwrtusrjj".getBytes(StandardCharsets.UTF_8);
         //Act + assert
-        byte[] cipherText = cipher.encrypt(openText);
+        cipher.encrypt(openText);
     }
 
     @Test

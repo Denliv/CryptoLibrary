@@ -43,10 +43,8 @@ public class FileDealer implements IDataDealer {
     @Override
     public void toFirst() throws IOException {
 
-        if (openText.length() == 0 || openText.getFilePointer() == 0) return;
-        this.openText.seek(0L);
-        if (closedText.length() == 0 || closedText.getFilePointer() == 0) return;
-        this.closedText.seek(0L);
+        if (openText.length() != 0 && openText.getFilePointer() != 0) this.openText.seek(0L);
+        if (closedText.length() != 0 && closedText.getFilePointer() != 0)  this.closedText.seek(0L);
         textSize = openText.length();
     }
 

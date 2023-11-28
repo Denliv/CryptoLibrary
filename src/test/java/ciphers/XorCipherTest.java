@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class XorCipherTest {
     @Test
     public void test1() {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10_000; i++) {
             //Arrange
             byte[] byteArr = new XorKeyGenerator().generate();
             XorCipher cipher = new XorCipher(byteArr);
