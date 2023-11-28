@@ -1,6 +1,8 @@
 package data_dealer;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class FileDealer implements IDataDealer {
     private long textSize;
@@ -15,19 +17,11 @@ public class FileDealer implements IDataDealer {
         if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.exists()) {
             throw new IllegalArgumentException("File with " + closedText.getName() + " already exists in " + closedText.getParent());
         }
+        if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.length() == 0) {
+            Files.copy(openText.toPath(), closedText.toPath(), StandardCopyOption.COPY_ATTRIBUTES);
+        }
         this.closedText = new RandomAccessFile(closedText, "rw");
         this.openText = new RandomAccessFile(closedText, "r");
-        if (!closedText.getAbsolutePath().equals(openText.getAbsolutePath()) && closedText.length() == 0) {
-            try (FileInputStream input = new FileInputStream(openText);
-                 FileOutputStream output = new FileOutputStream(closedText)) {
-                while (input.available() > 0) {
-                    int data = input.read();
-                    output.write(data);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
         this.textSize = this.closedText.length();
     }
 
